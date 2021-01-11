@@ -10,7 +10,6 @@ struct Person {
     age: usize,
 }
 
-// I AM NOT DONE
 // Steps:
 // 1. If the length of the provided string is 0, then return an error
 // 2. Split the given string on the commas present in it
@@ -23,6 +22,50 @@ struct Person {
 impl FromStr for Person {
     type Err = String;
     fn from_str(s: &str) -> Result<Person, Self::Err> {
+        // Looong way
+        // let mut name = String::from("Hello");
+        // let mut age = 1;
+        // if s.len() == 0 {
+        //     return Err(String::from("Empty"));
+        // } else {
+        //     let mut person = s.split(",");
+        //     if let Some(nam) = person.nth(0) {
+        //         if nam.len() == 0 {
+        //             return Err(String::from("No Name Available"));
+        //         } else {
+        //             name = nam.to_string();
+        //         }
+        //     } else {
+        //         return Err(String::from("No Name Available"));
+        //     }
+        //     if let Some(ag) = person.nth(0) {
+        //         if let Ok(x) = ag.parse::<usize>() {
+        //             age = x;
+        //         } else {
+        //             return Err(String::from("No Age Available"));
+        //         }
+        //     } else {
+        //         return Err(String::from("No Age Available"));
+        //     }
+        //     return Ok(Person { name, age });
+        // }
+        // Err(String::from("something is wrong"))
+
+        if s.len() == 0 {
+            Err(String::from("Empty"))
+        } else {
+            let person = s.split(",").collect::<Vec<&str>>();
+            let name = String::from(person[0]);
+            let age = person[1].parse::<usize>().unwrap();
+            if name.is_empty() {
+                Err(String::from("No Name Available"))
+            } else {
+                match name {
+                    name => Ok(Person { name, age }),
+                    _ => Err(String::from("Error")),
+                }
+            }
+        }
     }
 }
 
